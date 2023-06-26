@@ -16,28 +16,21 @@ app.post('/sign-up', (req, res) => {
     if (!username || !avatar) {
         res.status(400).send('Preencha os dados corretamente!');
     } else {
-        users.push(newUser);
         res.status(201).send("Ok");
     }
+    users.push({ username, avatar});
+    console.log(users);
 });
 
 app.post('/tweets', (req, res) => {
-    const { tweet } = req.body;
-    const userExists = users.some(user => user.username === username);
+    const { username, tweet } = req.body;
+    const userExists = users.find(user => user.username === username);
 
-    if(!username || !tweet)
-        return res.status(400).send('Preencha os dados corretamente!');
+    if (!userExists)
+        return res.send('UNAUTHORIZED');
 
-    if (!userExists) {
-        return res.status(401).send('Não autorizado!');
-    }
-
-    tweets.push(tweet);
+    tweets.push({ username, tweet });
     res.status(200).send('Ok');
 })
 
-app.get('/tweets', (req, res) => {
-    
-})
-
-app.listen(PORT);
+app.listen(PORT, () => console.log(`Rodando servidor na porta ${PORT}`));
