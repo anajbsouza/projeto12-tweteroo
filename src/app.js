@@ -15,23 +15,23 @@ app.post('/sign-up', (req, res) => {
 
     if (!username || !avatar) {
         if (typeof username !== 'string' || typeof avatar !== 'string')
-        res.status(400).send('Preencha os dados corretamente!');
+            res.status(400).send('Preencha os dados corretamente!');
     } else {
         res.status(201).send("Ok");
     }
     users.push({ username, avatar});
-    //console.log(users);
 });
 
 app.post('/tweets', (req, res) => {
     const { username, tweet } = req.body;
     const userExists = users.find(user => user.username === username);
 
-    if (!userExists) 
-        return res.send('UNAUTHORIZED');
-
+    if (!userExists) {
+        if (typeof tweet !== 'string')
+            return res.status(400).send('UNAUTHORIZED');
+    }
     tweets.push({ username, tweet });
-    res.status(200).send('Ok');
+    res.status(201).send('Ok');
 });
 
 app.get('/tweets', (req, res) => {
@@ -46,7 +46,7 @@ app.get('/tweets', (req, res) => {
         }
     });
     if (completeInfo.length > 10) {
-        return completeInfo.slice(-10);
+        res.send(completeInfo.slice(-10));
     }
     res.send(completeInfo);
 });
