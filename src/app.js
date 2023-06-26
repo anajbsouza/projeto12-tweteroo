@@ -13,12 +13,11 @@ const tweets = [];
 app.post('/sign-up', (req, res) => {
     const { username, avatar } = req.body;
 
-    if (!username || !avatar) {
-        if (typeof username !== 'string' || typeof avatar !== 'string')
-            res.status(400).send('Preencha os dados corretamente!');
-    } else {
-        res.status(201).send("Ok");
+    if (!username || !avatar || typeof username !== 'string' || typeof avatar !== 'string') {
+        return res.status(400).send('Preencha os dados corretamente!');
     }
+    
+    res.status(201).send("Ok");
     users.push({ username, avatar});
 });
 
