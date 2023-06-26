@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 
-const PORT = 5005;
+const PORT = 5000;
 
 const app = express(); 
 app.use(cors());
@@ -11,31 +11,33 @@ const users = [];
 const tweets = [];
 
 app.post('/sign-up', (req, res) => {
-    const newUser = req.body;
+    const { username, avatar } = req.body;
 
-    if (!newUser.username || !newUser.avatar) {
+    if (!username || !avatar) {
         res.status(400).send('Preencha os dados corretamente!');
     } else {
         users.push(newUser);
-        res.status(200).send("Ok");
+        res.status(201).send("Ok");
     }
 });
 
 app.post('/tweets', (req, res) => {
-    const newTweet = req.body;
-    
-    if(!newTweet.username || !newTweet.tweet)
-        return res.status(400).send('Preencha os dados corretamente!');
+    const { tweet } = req.body;
+    const userExists = users.some(user => user.username === username);
 
-    const userExists = users.some(user => user.username === newTweet.username);
+    if(!username || !tweet)
+        return res.status(400).send('Preencha os dados corretamente!');
 
     if (!userExists) {
         return res.status(401).send('Não autorizado!');
     }
 
-    tweets.push(newTweet);
+    tweets.push(tweet);
     res.status(200).send('Ok');
 })
 
+app.get('/tweets', (req, res) => {
+    
+})
 
 app.listen(PORT);
