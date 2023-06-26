@@ -28,7 +28,7 @@ app.post('/tweets', (req, res) => {
 
     if (!userExists) {
         if (typeof tweet !== 'string')
-            return res.status(400).send('UNAUTHORIZED');
+            return res.send('UNAUTHORIZED');
     }
     tweets.push({ username, tweet });
     res.status(201).send('Ok');
