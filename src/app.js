@@ -16,7 +16,7 @@ app.post('/sign-up', (req, res) => {
     if (!username || !avatar || typeof username !== 'string' || typeof avatar !== 'string') {
         return res.status(400).send('Preencha os dados corretamente!');
     }
-    
+
     res.status(201).send("Ok");
     users.push({ username, avatar});
 });
@@ -25,10 +25,9 @@ app.post('/tweets', (req, res) => {
     const { username, tweet } = req.body;
     const userExists = users.find(user => user.username === username);
 
-    if (!userExists) {
-        if (typeof tweet !== 'string')
-            return res.send('UNAUTHORIZED');
-    }
+    if (!userExists || typeof tweet !== 'string')
+        return res.send('UNAUTHORIZED');
+        
     tweets.push({ username, tweet });
     res.status(201).send('Ok');
 });
