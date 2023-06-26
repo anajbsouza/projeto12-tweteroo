@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 
-const PORT = 5001;
+const PORT = 5000;
 
 const app = express(); 
 app.use(cors());
@@ -14,6 +14,7 @@ app.post('/sign-up', (req, res) => {
     const { username, avatar } = req.body;
 
     if (!username || !avatar) {
+        if (typeof username !== 'string' || typeof avatar !== 'string')
         res.status(400).send('Preencha os dados corretamente!');
     } else {
         res.status(201).send("Ok");
